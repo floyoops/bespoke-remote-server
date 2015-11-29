@@ -80,7 +80,7 @@ module.exports = {
 
             socket.on('bespoke-action', function (action) {
                 if (me.user.remoteUser) {
-                    if (action == 'prev' || action == 'next') {
+                    if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
                         me.user.remoteUser.client.emit('client-bespoke-action', action);
                     }
                 }
