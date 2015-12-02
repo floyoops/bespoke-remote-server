@@ -97,6 +97,10 @@ module.exports = {
                 that.sendBespokeActionToMe(me, action);
             });
 
+            socket.on('flopoke-note', function(objNote) {
+                socket.broadcast.emit('client-flopoke-note', objNote);
+            });
+
         });
     }
 };
