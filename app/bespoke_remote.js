@@ -45,18 +45,39 @@ module.exports = {
             this.updateUser(me);
         }
     },
+    getTokens: function() {
+        var listToken = [];
+        for (userId in this.usersConnect) {
+            var tokenBp = this.usersConnect[userId].user.token_bp;
+            if (tokenBp) {
+                listToken.push(tokenBp);
+            }
+        }
+
+        return listToken;
+    },
+    sendBespokeActionToMe: function(me, action) {
+        if (me.user.remoteUser) {
+            if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
+                me.user.remoteUser.client.emit('client-bespoke-action', action);
+            }
+        }
+    },
+    setTokenBp: function(me, tokenBp) {
+        var user = this.usersConnect[me.user.id];
+        if (user) {
+            me.user.token_bp = tokenBp;
+            this.updateUser(me);
+        }
+    },
     init: function(io) {
         var that = this;
         io.sockets.on('connect', function (socket) {
             var me = that.createUser(socket);
 
             socket.on('setTokenBp', function (tokenBp) {
-                var user = that.usersConnect[me.user.id];
-                if (user) {
-                    me.user.token_bp = tokenBp;
-                    that.updateUser(me);
-                }
-
+                that.setTokenBp(me, tokenBp);
+                socket.broadcast.emit('client-list-users', that.getTokens());
             });
 
             socket.on('setRemoteUser', function (userId) {
@@ -65,25 +86,15 @@ module.exports = {
 
             socket.on('disconnect', function () {
                 that.removeUser(me);
+                socket.broadcast.emit('client-list-users', that.getTokens());
             });
 
             socket.on('list-users', function () {
-                var listToken = [];
-                for (userId in that.usersConnect) {
-                    var tokenBp = that.usersConnect[userId].user.token_bp;
-                    if (tokenBp) {
-                        listToken.push(tokenBp);
-                    }
-                }
-                socket.emit('client-list-users', listToken);
+                socket.emit('client-list-users', that.getTokens());
             });
 
             socket.on('bespoke-action', function (action) {
-                if (me.user.remoteUser) {
-                    if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
-                        me.user.remoteUser.client.emit('client-bespoke-action', action);
-                    }
-                }
+                that.sendBespokeActionToMe(me, action);
             });
 
         });
