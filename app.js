@@ -1,3 +1,4 @@
+require('cors');
 var express = require('express');
 var port = 8000;
 var path = require('path');
