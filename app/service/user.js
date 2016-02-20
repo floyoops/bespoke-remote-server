@@ -1,3 +1,5 @@
+//var User =require('../model/user');
+
 module.exports = {
     usersConnect: [],
     create: function(socket) {
@@ -10,32 +12,28 @@ module.exports = {
             remoteUser: false
         };
 
-        this.addUser(user);
+        this.add(user);
 
         return user;
     },
-    addUser: function(user) {
+    add: function(user) {
         if (this.usersConnect.hasOwnProperty(user.user.id) == false) {
             this.usersConnect[user.user.id] = user;
         }
     },
-
-
-
-
-    removeUser: function(user) {
+    remove: function(user) {
         if (this.usersConnect.hasOwnProperty(user.user.id)) {
             delete this.usersConnect[user.user.id];
         }
     },
-    updateUser: function (user) {
-        this.removeUser(user);
-        this.addUser(user);
+    update: function (user) {
+        this.remove(user);
+        this.add(user);
     },
     setRemoteUser: function (me, tokenBp) {
         var userRemote = false;
         var that = this;
-        for (userId in that.usersConnect) {
+        for (var userId in that.usersConnect) {
             if (that.usersConnect.hasOwnProperty(userId)) {
                 var u = that.usersConnect[userId];
                 if (u.user.token_bp == tokenBp) {
@@ -46,12 +44,12 @@ module.exports = {
 
         if (userRemote) {
             me.user.remoteUser = userRemote;
-            this.updateUser(me);
+            this.update(me);
         }
     },
     getTokens: function() {
         var listToken = [];
-        for (userId in this.usersConnect) {
+        for (var userId in this.usersConnect) {
             var tokenBp = this.usersConnect[userId].user.token_bp;
             if (tokenBp) {
                 listToken.push(tokenBp);
@@ -60,18 +58,11 @@ module.exports = {
 
         return listToken;
     },
-    sendBespokeActionToMe: function(me, action) {
-        if (me.user.remoteUser) {
-            if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
-                me.user.remoteUser.client.emit('client-bespoke-action', action);
-            }
-        }
-    },
     setTokenBp: function(me, tokenBp) {
         var user = this.usersConnect[me.user.id];
         if (user) {
             me.user.token_bp = tokenBp;
-            this.updateUser(me);
+            this.update(me);
         }
     }
 };

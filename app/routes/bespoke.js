@@ -8,19 +8,19 @@ module.exports = {
             var me = userService.create(socket);
 
             socket.on('setTokenBp', function (tokenBp) {
-                bespokeController.setTokenBp(socket, me, tokenBp);
+                bespokeController.setTokenBpAction(socket, me, tokenBp);
             });
 
             socket.on('setRemoteUser', function (userId) {
-                bespokeController.setRemoteUser(me, userId);
+                bespokeController.setRemoteUserAction(me, userId);
             });
 
             socket.on('disconnect', function () {
-                bespokeController.disconnect(socket, me);
+                bespokeController.disconnectAction(socket, me);
             });
 
             socket.on('list-users', function () {
-                bespokeController.listUsers(socket);
+                bespokeController.listUsersAction(socket);
             });
 
             socket.on('bespoke-action', function (action) {
@@ -28,9 +28,8 @@ module.exports = {
             });
 
             socket.on('flopoke-note', function(objNote) {
-                bespokeController.flopokeNote(socket, objNote);
+                bespokeController.flopokeNoteAction(socket, objNote);
             });
-
         });
     }
 };
