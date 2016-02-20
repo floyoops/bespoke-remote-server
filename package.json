@@ -1,21 +1,26 @@
 {
-  "name": "bespoke-remote-floyoops",
-  "version": "0.0.1",
-  "description": "remote bespoke",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "bespoke",
-    "remote"
-  ],
-  "author": "floyoops",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.7.1",
-    "express": "^4.13.3",
-    "jade": "^1.11.0",
-    "socket.io": "^1.3.7"
-  }
+"name": "bespoke-remote-floyoops",
+"version": "0.0.1",
+"description": "remote bespoke",
+"main": "index.js",
+"scripts": {
+"test": "echo \"Error: no test specified\" && exit 1"
+},
+"keywords": [
+"bespoke",
+"remote"
+],
+"author": "floyoops",
+"license": "ISC",
+"dependencies": {
+"cors": "^2.7.1",
+"express": "^4.13.3",
+"jade": "^1.11.0",
+"socket.io": "^1.3.7",
+"body-parser": "~1.13.2",
+"cookie-parser": "~1.3.5",
+"debug": "~2.2.0",
+"jade": "~1.11.0",
+"morgan": "~1.6.1"
+}
 }
