@@ -2,8 +2,6 @@
 
 $ npm install
 
-$ bower install
-
 # Start #
 $ DEBUG=express:* npm start --debug app.js
 
