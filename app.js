@@ -58,6 +58,6 @@ app.use(function(err, req, res, next) {
 });
 
 server = app.listen(port);
-require('./app/socket/bespoke_remote.js').init(io(server));
+require('./app/routes/bespoke.js').init(io(server));
 
 module.exports = app;

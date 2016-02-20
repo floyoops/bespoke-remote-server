@@ -1,6 +1,6 @@
 module.exports = {
     usersConnect: [],
-    createUser: function(socket) {
+    create: function(socket) {
         var user = {
             user: {
                 id: socket.id,
@@ -19,6 +19,10 @@ module.exports = {
             this.usersConnect[user.user.id] = user;
         }
     },
+
+
+
+
     removeUser: function(user) {
         if (this.usersConnect.hasOwnProperty(user.user.id)) {
             delete this.usersConnect[user.user.id];
@@ -69,38 +73,5 @@ module.exports = {
             me.user.token_bp = tokenBp;
             this.updateUser(me);
         }
-    },
-    init: function(io) {
-        var that = this;
-        io.sockets.on('connect', function (socket) {
-            var me = that.createUser(socket);
-
-            socket.on('setTokenBp', function (tokenBp) {
-                that.setTokenBp(me, tokenBp);
-                socket.broadcast.emit('client-list-users', that.getTokens());
-            });
-
-            socket.on('setRemoteUser', function (userId) {
-                that.setRemoteUser(me, userId);
-            });
-
-            socket.on('disconnect', function () {
-                that.removeUser(me);
-                socket.broadcast.emit('client-list-users', that.getTokens());
-            });
-
-            socket.on('list-users', function () {
-                socket.emit('client-list-users', that.getTokens());
-            });
-
-            socket.on('bespoke-action', function (action) {
-                that.sendBespokeActionToMe(me, action);
-            });
-
-            socket.on('flopoke-note', function(objNote) {
-                socket.broadcast.emit('client-flopoke-note', objNote);
-            });
-
-        });
     }
 };
