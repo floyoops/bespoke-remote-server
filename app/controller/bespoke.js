@@ -1,38 +1,32 @@
+bespokeService = require('../service/bespoke');
 userService =require('../service/user');
 
-module.exports = {
+module.exports = function (io) {
+     io.sockets.on('connect', function (socket) {
+        var me = userService.create(socket);
 
-    setTokenBpAction: function(socket, me, tokenBp) {
-        userService.setTokenBp(me, tokenBp);
-        socket.broadcast.emit('client-list-users', userService.getTokens());
-    },
+        socket.on('setTokenBp', function (tokenBp) {
+            bespokeService.setTokenBpAction(socket, me, tokenBp);
+        });
 
-    setRemoteUserAction: function (me, userId) {
-        userService.setRemoteUser(me, userId);
-    },
+        socket.on('setRemoteUser', function (userId) {
+            bespokeService.setRemoteUserAction(me, userId);
+        });
 
-    disconnectAction: function (socket, me) {
-        userService.remove(me);
-        socket.broadcast.emit('client-list-users', userService.getTokens());
-    },
+        socket.on('disconnect', function () {
+            bespokeService.disconnectAction(socket, me);
+        });
 
-    listUsersAction: function (socket) {
-        socket.emit('client-list-users', userService.getTokens());
-    },
+        socket.on('list-users', function () {
+            bespokeService.listUsersAction(socket);
+        });
 
-    bespokeAction: function (me, action) {
-        this.sendBespokeToMeAction(me, action);
-    },
+        socket.on('bespoke-action', function (action) {
+            bespokeService.bespokeAction(me, action);
+        });
 
-    flopokeNoteAction: function(socket, objNote) {
-        socket.broadcast.emit('client-flopoke-note', objNote);
-    },
-
-    sendBespokeToMeAction: function(me, action) {
-        if (me.user.remoteUser) {
-            if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
-                me.user.remoteUser.client.emit('client-bespoke-action', action);
-            }
-        }
-    }
+        socket.on('flopoke-note', function(objNote) {
+            bespokeService.flopokeNoteAction(socket, objNote);
+        });
+    });
 };

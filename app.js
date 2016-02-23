@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', require('./app/routes/index'));
 
 // Sockets
-require('./app/sockets/bespoke.js')(io);
+require('./app/controller/bespoke.js')(io);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,5 +1,3 @@
-//var User =require('../model/user');
-
 module.exports = {
     usersConnect: [],
     create: function(socket) {
