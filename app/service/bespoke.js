@@ -11,6 +11,10 @@ module.exports = {
         userService.setRemoteUser(me, userId);
     },
 
+    setUserName: function (me, userName) {
+        userService.setUserName(me, userName);
+    },
+
     disconnectAction: function (socket, me) {
         userService.remove(me);
         socket.broadcast.emit('client-list-users', userService.getTokens());

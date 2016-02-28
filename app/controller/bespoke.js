@@ -13,6 +13,10 @@ module.exports = function (io) {
             bespokeService.setRemoteUserAction(me, userId);
         });
 
+        socket.on('setUserName', function (userName) {
+            bespokeService.setUserName(me, userName);
+        });
+
         socket.on('disconnect', function () {
             bespokeService.disconnectAction(socket, me);
         });
