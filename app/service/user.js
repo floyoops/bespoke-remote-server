@@ -4,7 +4,8 @@ module.exports = {
         var user = {
             user: {
                 id: socket.id,
-                token_bp: false
+                token_bp: false,
+                name: null
             },
             client: socket,
             remoteUser: false
@@ -42,6 +43,13 @@ module.exports = {
 
         if (userRemote) {
             me.user.remoteUser = userRemote;
+            this.update(me);
+        }
+    },
+    setUserName: function (me, userName) {
+        var user = this.usersConnect[me.user.id];
+        if (user) {
+            me.user.name = userName;
             this.update(me);
         }
     },
