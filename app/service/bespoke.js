@@ -33,9 +33,14 @@ module.exports = {
     },
 
     sendBespokeToMeAction: function(me, action) {
+        var res = {
+            'username': me.user.name,
+            'action': action
+        };
+
         if (me.user.remoteUser) {
             if (action == 'prev' || action == 'next' || action == 'flopoke-finger1-start') {
-                me.user.remoteUser.client.emit('client-bespoke-action', action);
+                me.user.remoteUser.client.emit('client-bespoke-action', res);
             }
         }
     }
